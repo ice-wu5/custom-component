@@ -1,0 +1,45 @@
+.w100{
+  width: 100%;
+}
+
+.h100{
+  height: 100%;
+}
+.m0auto{
+  margin: 0 auto;
+}
+
+.h60px{
+  height: 60px;
+}
+.lh60px{
+  line-height: 60px;
+}
+.hover-bgc-pink:hover{
+  background-color: pink;
+}
+.c-pointer{
+cursor: pointer;
+}
+.border-1-eee{
+  border: 1px solid #eee;
+}
+/* .bgc999{
+  background-color: #999;
+} */
+.flex{
+  display: flex;
+}
+.flex-1{
+  flex: 1;
+}
+.jc-sp-bet{
+  justify-content: space-between;
+}
+
+.w200px{
+  width: 200px;
+}
+.tac{
+  text-align: center;
+}
