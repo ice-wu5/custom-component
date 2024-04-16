@@ -2,15 +2,32 @@ export const routes = [
   {
     path: '/',
     name: 'home',
+    redirect: 'tip',
     component: () => import(/* webpackChunkName: "about" */ '@/views/Home/Home.vue'),
     children: [
       {
         path: 'tip',
         name: 'tip',
         component: () => import(/* webpackChunkName: "about" */ '@/views/Tip/Tip.vue')
+      },
+      {
+        path: 'accordion',
+        name: 'accordion',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/Accordion/Accordion.vue')
+      },
+      {
+        path: 'dialog',
+        name: 'dialog',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/Dialog/Dialog.vue')
+      },
+      {
+        path: 'nomaskdialog',
+        name: 'nomaskdialog',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/NoMaskDialog/NoMaskDialog.vue')
       }
     ]
   }
+
   // {
   //   path: '/about',
   //   name: 'about',

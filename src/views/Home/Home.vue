@@ -1,8 +1,9 @@
 <template>
 <div class="home">
-  <div class="nav-container w100 h60px bgc999 lh60px m0auto">
+  <div class="nav-container w100 h60px  lh60px m0auto">
     <NavBar :navList="navList"></NavBar>
   </div>
+  <router-view></router-view>
 </div>
 </template>
 
@@ -24,15 +25,18 @@ export default {
         },
         {
           id: 2,
+          title: 'accordion',
           name: '手风琴'
         },
         {
           id: 3,
+          title: 'dialog',
           name: '会话框'
         },
         {
           id: 4,
-          name: '抽屉'
+          title: 'nomaskdialog',
+          name: '无遮罩弹窗'
         },
         {
           id: 5,
