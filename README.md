@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # comps
 
 ## Project setup
@@ -22,3 +23,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+=======
+# custom-component
+>>>>>>> 3a3c9923a353788259eca83f3cebc4c139976fee
