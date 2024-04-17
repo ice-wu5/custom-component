@@ -1,27 +1,21 @@
 <template>
   <div class="table-item-container">
-    <div class="table-row" v-for="(item,index) in hasIsExpandTableData" :key="item.id"
-    >
+    <div class="table-row" v-for="(item,index) in hasIsExpandTableData" :key="item.id">
       <div class="level-1 flex height40" :class="{dark:index%2!==0,light:index%2===0}">
-        <div class="id width40"
-        :style=" {'padding-left':getPaddingLeft(item.level)}">
-
-        <div class="title position-relative">
-          <div class="title-detail display-inline-block position-relative">{{item.id}}
-            <span v-if="item.children && item.children.length" class="expand" @click="item.isExpand=!item.isExpand"></span>
-
+        <div class="id width40 rcc" :style=" {'padding-left':getPaddingLeft(item.level)}">
+          <div class="title position-relative">
+            <div class="title-detail display-inline-block position-relative">{{item.id}}
+              <span v-if="item.children && item.children.length" class="expand" @click="item.isExpand=!item.isExpand"></span>
+            </div>
           </div>
-
         </div>
-
+        <div class="name width12 cursor-pointer rcc" @click="seeDetail(item)">{{item.name}}</div>
+        <div class="age width12 rcc">{{item.age}}</div>
+        <div class="sex width12 rcc">{{item.sex}}</div>
+        <div class="address width12 rcc">{{item.address}}</div>
+        <div class="date width12 rcc">{{item.date}}</div>
       </div>
-        <div class="name width12 cursor-pointer" @click="seeDetail(item)">{{item.name}}</div>
-        <div class="age width12">{{item.age}}</div>
-        <div class="sex width12">{{item.sex}}</div>
-        <div class="address width12">{{item.address}}</div>
-        <div class="date width12">{{item.date}}</div>
-      </div>
-      <div v-if="item.isExpand===true" class="level-2" :class="{dark:index/2===0,light:index/2!==0}">
+      <div v-if="item.isExpand===true" class="level-2">
         <TableItem :tableData="item.children" @seeDetail="seeDetail"></TableItem>
       </div>
     </div>
@@ -109,6 +103,12 @@ export default {
 .flex{
   display: flex;
 }
+.rcc{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
 .width40{
   width: 40%;
 }
@@ -116,7 +116,6 @@ export default {
   width: 12%;
 }
 .height40{
-  height: 40px;
   line-height: 40px;
   text-align: center;
 }

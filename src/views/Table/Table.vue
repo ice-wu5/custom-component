@@ -60,7 +60,8 @@ export default {
                   children: []
                 }
               ]
-            }, {
+            },
+            {
               id: 22,
               level: 2,
               name: '李四21',

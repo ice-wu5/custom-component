@@ -37,6 +37,18 @@ export default {
 .flex{
   display: flex;
 }
+.align-items-center{
+  align-items: center;
+}
+.justify-content-center{
+  justify-content: center;
+}
+.rcc{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
 .width40{
   width:40%
 }
@@ -44,7 +56,6 @@ export default {
   width: 12%;
 }
 .height30{
-  height: 30px;
   line-height: 30px;
   text-align: center;
 }
