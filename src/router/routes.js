@@ -24,6 +24,11 @@ export const routes = [
         path: 'nomaskdialog',
         name: 'nomaskdialog',
         component: () => import(/* webpackChunkName: "about" */ '@/views/NoMaskDialog/NoMaskDialog.vue')
+      },
+      {
+        path: 'table',
+        name: 'table',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/Table/Table.vue')
       }
     ]
   }

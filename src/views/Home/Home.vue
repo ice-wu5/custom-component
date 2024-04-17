@@ -40,7 +40,8 @@ export default {
         },
         {
           id: 5,
-          name: '提示表单框'
+          title: 'table',
+          name: '表格'
         }
 
       ]
