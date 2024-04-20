@@ -6,7 +6,7 @@
         v-for="(item, index) in myList"
         :key="index">
         <div
-          class="accordion-title"
+          class="accordion-title bgcenter"
           :style="{backgroundImage: 'url(' + `${item.imgUrl}` + ')'}"
 
         >
@@ -18,7 +18,8 @@
           :ref="`content${index}`"
           class="accordion-cintent"
           v-if="item.isActive"
-          :style="{ backgroundImage: `url(${item.imgUrl}` }">
+          >
+          <img class="wh100" :src="item.imgUrl" alt="">
         <div>{{ item.content.subTitle }}</div>
         </div>
       </div>
@@ -76,10 +77,16 @@ export default {
 .accordion-item {
   transition: width 0.5s; /* 添加过渡效果 */
 }
-
+.wh100{
+  width: 100%;
+  height: 100%;
+}
 .accordion-cintent {
   width: 200px;
   height: 200px;
   background-color: #c1e299;
+}
+.bgcenter{
+  background-size: cover;
 }
 </style>>

@@ -8,12 +8,17 @@
       :tooltipPosition="tooltipPosition"
       :tooltipContent="tooltipContent"
       >
-        <div class="c-pointer button">按钮</div>
+        <div class="c-pointer button active">按钮</div>
         <template #content>
+          <transition name="fade" :key="tipList.length">
+
           <ul>
+
             <li v-for="(item,index) in tipList" :key="index">{{item.title}}</li>
 
           </ul>
+        </transition>
+
         </template>
       </TipRisght>
       </div>
@@ -75,9 +80,27 @@ export default {
 <style lang="less" scoped>
 .tips{
   height: 40px;
-  background-color: #FD742D;
+  background-color: #d0c3bd;
   text-align: center;
   color: #fff;
   line-height: 40px;
+}
+.button{
+  width: 100px;
+  height: 50px;
+  background-color: #de3d3d;
+  opacity: 1;
+  transform: scale(1);
+  transition: 0.95s;
+}
+.button.active{
+  opacity: 0;
+  transform: scale(0);
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>>

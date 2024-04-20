@@ -46,6 +46,15 @@ export default {
 
       ]
     }
+  },
+  mounted () {
+    this.getDate()
+  },
+  methods: {
+    async getDate () {
+      const res = await fetch('https://study.duyiedu.com/api/herolist')
+      console.log(res)
+    }
   }
 }
 </script>

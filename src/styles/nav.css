@@ -22,6 +22,11 @@
 .hover-bgc-pink:hover{
   background-color: pink;
 }
+
+.clickbg{
+  background-color: #FD742D;
+  color: #fff;
+} 
 .hover-bgc-orange:hover{
   background-color: #FD742D;
   color: #fff;
