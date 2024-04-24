@@ -43,12 +43,7 @@ export default {
 .justify-content-center{
   justify-content: center;
 }
-.rcc{
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-}
 .width40{
   width:40%
 }
@@ -61,5 +56,9 @@ export default {
 }
 .bgcceeeff{
   background-color: #ceeeff;
+}
+.table-body{
+  height: 300px;
+  overflow-y: auto;
 }
 </style>>

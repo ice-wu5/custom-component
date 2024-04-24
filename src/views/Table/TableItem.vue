@@ -2,17 +2,17 @@
   <div class="table-item-container">
     <div class="table-row" v-for="(item,index) in hasIsExpandTableData" :key="item.id">
       <div class="level-1 flex height40" :class="{dark:index%2!==0,light:index%2===0}">
-        <div class="id width40 rcc" :style=" {'padding-left':getPaddingLeft(item.level)}">
+        <div class="id width40 rcc border-right" :style=" {'padding-left':getPaddingLeft(item.level)}">
           <div class="title position-relative">
             <div class="title-detail display-inline-block position-relative">{{item.id}}
               <span v-if="item.children && item.children.length" class="expand" @click="toggle(item)"></span>
             </div>
           </div>
         </div>
-        <div class="name width12 cursor-pointer rcc" @click="seeDetail(item)">{{item.name}}</div>
-        <div class="age width12 rcc">{{item.age||'--'}}</div>
-        <div class="sex width12 rcc">{{item.sex ||'--'}}</div>
-        <div class="address width12 rcc">{{item.address ||'--'}}</div>
+        <div class="name width12 cursor-pointer rcc border-right" @click="seeDetail(item)">{{item.name}}</div>
+        <div class="age width12 rcc border-right">{{item.age||'--'}}</div>
+        <div class="sex width12 rcc border-right">{{item.sex ||'--'}}</div>
+        <div class="address width12 rcc border-right">{{item.address ||'--'}}</div>
         <div class="date width12 rcc">{{item.date ||'--'}}</div>
       </div>
       <div v-if="item.isExpand===true" class="level-2">
@@ -117,6 +117,9 @@ export default {
   justify-content: center;
   align-items: center;
 
+}
+.border-right{
+  border-right:1px solid #e13a3a
 }
 .width40{
   width: 40%;
