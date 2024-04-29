@@ -15,6 +15,21 @@
         <p>Clicking here won't close the modal.</p>
       </div>
     </Modal>
+    <div class="hr"></div>
+    <Modal>
+      <button slot="reference">Open Modal2</button>
+
+      <div class="content">
+        <!-- 点击内容区不关闭弹窗 -->
+        <h2>This is 222 the modal content.</h2>
+        <h2>This is 222the modal content.</h2>
+        <h2>This is the modal content.</h2>
+        <h2>This is the modal content.</h2>
+        <h2>This is the modal content.</h2>
+        <h2>This is the modal content.</h2>
+        <p>Clicking here won't close the modal.</p>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -53,9 +68,13 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.hr {
+  height: 100px;
+}
 .content {
   width: 100px;
   height: 200px;
   background-color: #c79494;
+  overflow: hidden;
 }
 </style>
