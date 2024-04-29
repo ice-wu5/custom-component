@@ -1,10 +1,10 @@
 <template>
-<div class="home">
-  <div class="nav-container w100 h60px  lh60px m0auto">
-    <NavBar :navList="navList"></NavBar>
+  <div class="home">
+    <div class="nav-container w100 h60px lh60px m0auto">
+      <NavBar :navList="navList"></NavBar>
+    </div>
+    <router-view></router-view>
   </div>
-  <router-view></router-view>
-</div>
 </template>
 
 <script>
@@ -42,6 +42,11 @@ export default {
           id: 5,
           title: 'table',
           name: '表格'
+        },
+        {
+          id: 6,
+          title: 'popover',
+          name: 'popover'
         }
 
       ]
@@ -60,5 +65,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 </style>>

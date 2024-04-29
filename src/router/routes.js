@@ -29,6 +29,11 @@ export const routes = [
         path: 'table',
         name: 'table',
         component: () => import(/* webpackChunkName: "about" */ '@/views/Table/Table.vue')
+      },
+      {
+        path: 'popover',
+        name: 'popover',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/Popover/PopoverBox.vue')
       }
     ]
   }

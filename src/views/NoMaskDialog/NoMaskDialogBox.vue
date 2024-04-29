@@ -2,19 +2,8 @@
   <div class="container">
     <!-- <div class="mask" v-if="isVisible" @click.self="closeDialog"> -->
     <div class="dialog-box">
-      <!-- <div class="header">
-          <div class="close c-pointer" >X</div>
-        </div> -->
-      <div class="tac">我是自定义内容</div>
-      <div class="tac">我是自定义内容</div>
-      <div class="tac">我是自定义内容</div>
-      <div class="tac">我是自定义内容</div>
-      <div class="tac">我是自定义内容</div>
-      <div class="tac">我是自定义内容</div>
-      <div class="tac">我是自定义内容</div>
-      <div class="tac">我是自定义内容</div>
-      <div class="tac">我是自定义内容</div>
-      <slot name="content"></slot>
+      <slot name="reference" ref="reference"></slot>
+      <slot class="content" v-if="isVisible"></slot>
     </div>
     <!-- </div> -->
   </div>
@@ -22,6 +11,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      isVisible: false
+    }
+  },
   // props: {
   //   isVisible: {
   //     type: Boolean,
@@ -29,15 +23,52 @@ export default {
   //   }
   // },
   name: 'NoMaskDialogBox',
+  // methods: {
+  //   closeDialog () {
+  //     this.$emit('close')
+  //   }
+  // },
+  mounted () {
+    console.log(this)
+
+    const reference = this.$slots.reference[0].elm
+    console.log(reference)
+    if (reference) {
+      reference.addEventListener('click', this.handleButtonClick)
+    }
+  },
   methods: {
-    closeDialog () {
-      this.$emit('close')
+    handleButtonClick () {
+      console.log('点击了')
+
+      this.isVisible = !this.isVisible
+      // 添加点击事件监听器，以关闭弹窗
+      document.addEventListener('click', this.closeModalOutside)
+    },
+    closeModal () {
+      this.isVisible = false
+      // 移除点击事件监听器
+      document.removeEventListener('click', this.closeModalOutside)
+    },
+    closeModalOutside (event) {
+      console.log('38line', this)
+      // 如果点击的目标不在弹窗内部，则关闭弹窗
+      if (!this.$el.contains(event.target)) {
+        // this.showModal = false
+        this.closeModal()
+      }
     }
   }
+
 }
 </script>
 
 <style lang="less" scoped>
+.content {
+  position: absolute;
+  left: 10%;
+  top: 10%;
+}
 .mask {
   position: fixed;
   left: 0;
@@ -47,21 +78,8 @@ export default {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.content {
-  background-color: #d89a9a;
-}
-
 .dialog-box {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 200px;
-  padding: 10px;
-  background-color: #ce8d8d;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position: relative;
 }
 
 .close {
