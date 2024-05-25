@@ -1,22 +1,47 @@
 <template>
   <div class="table-item-container">
-    <div class="table-row" v-for="(item,index) in hasIsExpandTableData" :key="item.id">
-      <div class="level-1 flex height40" :class="{dark:index%2!==0,light:index%2===0}">
-        <div class="id width40 rcc border-right" :style=" {'padding-left':getPaddingLeft(item.level)}">
+    <div
+      class="table-row"
+      v-for="(item, index) in hasIsExpandTableData"
+      :key="item.id"
+    >
+      <div
+        class="level-1 flex height40"
+        :class="{ dark: index % 2 !== 0, light: index % 2 === 0 }"
+      >
+        <div
+          class="id width40 rcc border-right"
+          :style="{ 'padding-left': getPaddingLeft(item.level) }"
+        >
           <div class="title position-relative">
-            <div class="title-detail display-inline-block position-relative">{{item.id}}
-              <span v-if="item.children && item.children.length" class="expand" @click="toggle(item)"></span>
+            <div class="title-detail display-inline-block position-relative">
+              {{ item.id }}
+              <span
+                v-if="item.children && item.children.length"
+                class="expand"
+                @click="toggle(item)"
+              ></span>
             </div>
           </div>
         </div>
-        <div class="name width12 cursor-pointer rcc border-right" @click="seeDetail(item)">{{item.name}}</div>
-        <div class="age width12 rcc border-right">{{item.age||'--'}}</div>
-        <div class="sex width12 rcc border-right">{{item.sex ||'--'}}</div>
-        <div class="address width12 rcc border-right">{{item.address ||'--'}}</div>
-        <div class="date width12 rcc">{{item.date ||'--'}}</div>
+        <div
+          class="name width12 cursor-pointer rcc border-right"
+          @click="seeDetail(item, index)"
+        >
+          {{ item.name }}
+        </div>
+        <div class="age width12 rcc border-right">{{ item.age || "--" }}</div>
+        <div class="sex width12 rcc border-right">{{ item.sex || "--" }}</div>
+        <div class="address width12 rcc border-right">
+          {{ item.address || "--" }}
+        </div>
+        <div class="date width12 rcc">{{ item.date || "--" }}</div>
       </div>
-      <div v-if="item.isExpand===true" class="level-2">
-        <TableItem :tableData="item.children" @seeDetail="seeDetail"></TableItem>
+      <div v-if="item.isExpand === true" class="level-2">
+        <TableItem
+          :tableData="item.children"
+          @seeDetail="seeDetail(item, index)"
+        ></TableItem>
       </div>
     </div>
   </div>
@@ -71,10 +96,11 @@ export default {
       item.isExpand = !item.isExpand
       console.log(item.isExpand)
     },
-    seeDetail (item) {
+    seeDetail (item, index) {
       // console.log('see')
-      this.$emit('seeDetail', item)
+      this.$emit('seeDetail', { index, item })
     },
+    // can be changed to computed
     getPaddingLeft (level) {
       return (level - 1) * 55 + 'px'
     },
@@ -109,38 +135,37 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.flex{
+.flex {
   display: flex;
 }
-.rcc{
+.rcc {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
-.border-right{
-  border-right:1px solid #e13a3a
+.border-right {
+  border-right: 1px solid #e13a3a;
 }
-.width40{
+.width40 {
   width: 40%;
 }
-.width12{
+.width12 {
   width: 12%;
 }
-.height40{
+.height40 {
   line-height: 40px;
   text-align: center;
 }
-.dark{
+.dark {
   background-color: #2d98e4;
 }
-.light{
+.light {
   background-color: #e8e839;
 }
-.expand{
+.expand {
   position: absolute;
-  top:50%;
-  right:-30px;
+  top: 50%;
+  right: -30px;
   transform: translateY(-50%);
   width: 15px;
   height: 15px;
@@ -148,14 +173,13 @@ export default {
   background-color: #e13a3a;
   cursor: pointer;
 }
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
-
 }
-.position-relative{
+.position-relative {
   position: relative;
 }
-.display-inline-block{
+.display-inline-block {
   display: inline-block;
 }
 </style>>

@@ -1,11 +1,12 @@
 <template>
   <div class="container">
-    <TableBox  :titleList="titleList">
-      <TableItem :tableData="tableData" @seeDetail="seeDetail"></TableItem>
+    <TableBox :titleList="titleList">
+      <TableItem
+        :tableData="tableData"
+        @seeDetail="detail = $event"
+      ></TableItem>
     </TableBox>
-    <div @click="changeData" class="button">
-
-    </div>
+    <div @click="changeData" class="button"></div>
   </div>
 </template>
 
@@ -17,6 +18,167 @@ export default {
   components: { TableBox, TableItem },
   data () {
     return {
+      dataObject: {
+        A081201: {
+          indicatorsId: 'FPIDMDEF00083',
+          indicatorName: '一般性存款',
+          agencyMap: {
+            '21TC': {
+              agencyId: '21TC',
+              agencyName: '嘉定支行',
+              next: true,
+              values: [
+                {
+                  value: '123'
+                },
+                {
+                  name: '1'
+                }
+              ]
+            },
+            52344: {
+              agencyId: '52344',
+              agencyName: '上海支行',
+              next: true,
+              values: [
+                {
+                  value: '1234'
+                },
+                {
+                  name: '12'
+                }
+              ]
+            },
+            52346: {
+              agencyId: '52346',
+              agencyName: '北京支行',
+              next: true,
+              values: [
+                {
+                  value: '12345'
+                },
+                {
+                  name: '125'
+                }
+              ]
+            }
+          }
+        },
+        A081202: {
+          indicatorsId: 'FPIDMDEF00083',
+          indicatorName: '一般性贷款款',
+          agencyMap: {
+            '21TC': {
+              agencyId: '21TC',
+              agencyName: '嘉定支行',
+              next: true,
+              values: [
+                {
+                  value: '1238'
+                },
+                {
+                  name: '1'
+                }
+              ]
+            },
+            52344: {
+              agencyId: '52344',
+              agencyName: '上海支行',
+              next: true,
+              values: [
+                {
+                  value: '12349'
+                },
+                {
+                  name: '12'
+                }
+              ]
+            },
+            52346: {
+              agencyId: '52346',
+              agencyName: '北京支行',
+              next: true,
+              values: [
+                {
+                  value: '123459'
+                },
+                {
+                  name: '1259'
+                }
+              ]
+            }
+          }
+        },
+        A081203: {
+          indicatorsId: 'FPIDMDEF00083',
+          indicatorName: '一般性贷款款',
+          agencyMap: {
+            '21TC': {
+              agencyId: '21TC',
+              agencyName: '嘉定支行',
+              next: true,
+              values: [
+                {
+                  value: '123899'
+                },
+                {
+                  name: '1'
+                }
+              ]
+            },
+            52344: {
+              agencyId: '52344',
+              agencyName: '上海支行',
+              next: true,
+              values: [
+                {
+                  value: '1234900'
+                },
+                {
+                  name: '12'
+                }
+              ]
+            },
+            52346: {
+              agencyId: '52346',
+              agencyName: '北京支行',
+              next: true,
+              values: [
+                {
+                  // value: '12345900'
+                },
+                {
+                  name: '1259'
+                }
+              ]
+            }
+          }
+        }
+      },
+      // dataList: [
+      //   {
+      //     agencyId: '21TC',
+      //     agencyName: '嘉定支行',
+      //     A081201: '123',
+      //     A081202: '1238',
+      //     A081203: '123899'
+      //   },
+      //   {
+      //     agencyId: '52344',
+      //     agencyName: '上海支行',
+      //     A081201: '1234',
+      //     A081202: '12349',
+      //     A081203: '1234900'
+      //   },
+      //   {
+      //     agencyId: '52346',
+      //     agencyName: '北京支行',
+      //     A081201: '12345',
+      //     A081202: '123459',
+      //     A081203: '12345900'
+      //   }
+      // ],
+      detail: 'null',
       titleList: [
         'id', '姓名', '年龄', '性别', '地址', '日期'
       ],
@@ -136,9 +298,42 @@ export default {
       ]
     }
   },
+  mounted () {
+    // console.log('detail子传递的', this.detail)
+    const dataList = []
+    const agencyKey = Object.keys(this.dataObject)[0]
+    const agencyIdList = []
+    for (const agencyNum in this.dataObject) {
+      const agencyNumValue = {
+        indicatorId: agencyNum,
+        indicatorName: this.dataObject[agencyNum].indicatorName,
+        desc: true
+      }
+      agencyIdList.push(agencyNumValue)
+    }
+    console.log('agencyIdList', agencyIdList)
+    console.log(agencyKey)
+    console.log(this.dataObject[agencyKey].agencyMap)
+    // 遍历 dataObject
+    for (const agencyId in this.dataObject[agencyKey].agencyMap) {
+      const agencyData = {
+        agencyId: this.dataObject[agencyKey].agencyMap[agencyId].agencyId,
+        agencyName: this.dataObject[agencyKey].agencyMap[agencyId].agencyName
+      }
+
+      // 遍历每个指标
+      for (const indicatorId in this.dataObject) {
+        agencyData[indicatorId] = this.dataObject[indicatorId].agencyMap[agencyId].values[0].value || '--'
+      }
+
+      dataList.push(agencyData)
+    }
+
+    console.log(dataList)
+  },
   methods: {
-    seeDetail (e) {
-      console.log('父组件接收table传的数据', e)
+    seeDetail (e, i) {
+      console.log('父组件接收table传的数据', e, i)
     },
     changeData () {
       console.log('click了')
@@ -467,10 +662,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.button{
+.button {
   width: 100px;
   height: 50px;
-  border-radius:25px ;
+  border-radius: 25px;
   background-color: #e76d6d;
   cursor: pointer;
 }
