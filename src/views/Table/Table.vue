@@ -3,7 +3,7 @@
     <TableBox :titleList="titleList">
       <TableItem
         :tableData="tableData"
-        @seeDetail="detail = $event"
+        @seeDetail="handleSeeDetail(...arguments, 1)"
       ></TableItem>
     </TableBox>
     <div @click="changeData" class="button"></div>
@@ -18,6 +18,20 @@ export default {
   components: { TableBox, TableItem },
   data () {
     return {
+      originObject: {
+        yoyValue: '-123',
+        momValue: '234'
+      },
+      newObj: {
+        yoyValue: {
+          value: '123',
+          isPositiveNumber: '123' > 0
+        },
+        momValue: {
+          value: '234',
+          isPositiveNumber: '234' > 0
+        }
+      },
       dataObject: {
         A081201: {
           indicatorsId: 'FPIDMDEF00083',
@@ -299,39 +313,61 @@ export default {
     }
   },
   mounted () {
+    console.log(this.transformObject(this.originObject))
+
     // console.log('detail子传递的', this.detail)
-    const dataList = []
-    const agencyKey = Object.keys(this.dataObject)[0]
-    const agencyIdList = []
-    for (const agencyNum in this.dataObject) {
-      const agencyNumValue = {
-        indicatorId: agencyNum,
-        indicatorName: this.dataObject[agencyNum].indicatorName,
-        desc: true
-      }
-      agencyIdList.push(agencyNumValue)
-    }
-    console.log('agencyIdList', agencyIdList)
-    console.log(agencyKey)
-    console.log(this.dataObject[agencyKey].agencyMap)
-    // 遍历 dataObject
-    for (const agencyId in this.dataObject[agencyKey].agencyMap) {
-      const agencyData = {
-        agencyId: this.dataObject[agencyKey].agencyMap[agencyId].agencyId,
-        agencyName: this.dataObject[agencyKey].agencyMap[agencyId].agencyName
-      }
+    // const dataList = []
+    // const agencyKey = Object.keys(this.dataObject)[0]
+    // const agencyIdList = []
+    // for (const agencyNum in this.dataObject) {
+    //   const agencyNumValue = {
+    //     indicatorId: agencyNum,
+    //     indicatorName: this.dataObject[agencyNum].indicatorName,
+    //     desc: true
+    //   }
+    //   agencyIdList.push(agencyNumValue)
+    // }
+    // console.log('agencyIdList', agencyIdList)
+    // console.log(agencyKey)
+    // console.log(this.dataObject[agencyKey].agencyMap)
+    // // 遍历 dataObject
+    // for (const agencyId in this.dataObject[agencyKey].agencyMap) {
+    //   const agencyData = {
+    //     agencyId: this.dataObject[agencyKey].agencyMap[agencyId].agencyId,
+    //     agencyName: this.dataObject[agencyKey].agencyMap[agencyId].agencyName
+    //   }
 
-      // 遍历每个指标
-      for (const indicatorId in this.dataObject) {
-        agencyData[indicatorId] = this.dataObject[indicatorId].agencyMap[agencyId].values[0].value || '--'
-      }
+    //   // 遍历每个指标
+    //   for (const indicatorId in this.dataObject) {
+    //     agencyData[indicatorId] = this.dataObject[indicatorId].agencyMap[agencyId].values[0].value || '--'
+    //   }
 
-      dataList.push(agencyData)
-    }
+    //   dataList.push(agencyData)
+    // }
 
-    console.log(dataList)
+    // console.log(dataList)
   },
   methods: {
+    handleSeeDetail (a, b, c) {
+      console.log(a, b, c)
+    },
+    transformObject (originObject) {
+      const newObj = {}
+
+      for (const key in originObject) {
+        if (Object.prototype.hasOwnProperty.call(originObject, key)) {
+          const value = originObject[key]
+          const isPositiveNumber = Number(value) > 0
+
+          newObj[key] = {
+            value: value,
+            isPositiveNumber: isPositiveNumber
+          }
+        }
+      }
+
+      return newObj
+    },
     seeDetail (e, i) {
       console.log('父组件接收table传的数据', e, i)
     },

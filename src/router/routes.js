@@ -8,32 +8,48 @@ export const routes = [
       {
         path: 'tip',
         name: 'tip',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/Tip/Tip.vue')
+        component: () => import(/* webpackChunkName: "about" */ '@/views/Tip/Tip.vue'),
+        meta: {
+          isShowFlotatButton: true
+        }
       },
       {
         path: 'accordion',
         name: 'accordion',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/Accordion/Accordion.vue')
+        component: () => import(/* webpackChunkName: "about" */ '@/views/Accordion/Accordion.vue'),
+        meta: {
+          isShowFlotatButton: true
+        }
       },
       {
         path: 'dialog',
         name: 'dialog',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/Dialog/Dialog.vue')
+        component: () => import(/* webpackChunkName: "about" */ '@/views/Dialog/Dialog.vue'),
+        meta: {
+          isShowFlotatButton: true
+        }
       },
       {
         path: 'nomaskdialog',
         name: 'nomaskdialog',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/NoMaskDialog/NoMaskDialog.vue')
+        component: () => import(/* webpackChunkName: "about" */ '@/views/NoMaskDialog/NoMaskDialog.vue'),
+        meta: {
+          isShowFlotatButton: true
+        }
       },
       {
         path: 'table',
         name: 'table',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/Table/Table.vue')
+        component: () => import(/* webpackChunkName: "about" */ '@/views/Table/Table.vue'),
+        meta: {
+          isShowFlotatButton: true
+        }
       },
       {
         path: 'popover',
         name: 'popover',
         component: () => import(/* webpackChunkName: "about" */ '@/views/Popover/PopoverBox.vue')
+
       }
     ]
   }

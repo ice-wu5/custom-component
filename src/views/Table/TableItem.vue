@@ -2,12 +2,16 @@
   <div class="table-item-container">
     <div
       class="table-row"
+      :class="{ border: item.level === 1 }"
       v-for="(item, index) in hasIsExpandTableData"
       :key="item.id"
     >
       <div
         class="level-1 flex height40"
-        :class="{ dark: index % 2 !== 0, light: index % 2 === 0 }"
+        :class="{
+          dark: index % 2 !== 0,
+          light: index % 2 === 0,
+        }"
       >
         <div
           class="id width40 rcc border-right"
@@ -37,12 +41,11 @@
         </div>
         <div class="date width12 rcc">{{ item.date || "--" }}</div>
       </div>
-      <div v-if="item.isExpand === true" class="level-2">
-        <TableItem
-          :tableData="item.children"
-          @seeDetail="seeDetail(item, index)"
-        ></TableItem>
-      </div>
+      <TableItem
+        v-if="item.children && item.isExpand"
+        :tableData="item.children"
+        @seeDetail="seeDetail(item, index)"
+      ></TableItem>
     </div>
   </div>
 </template>
@@ -97,8 +100,8 @@ export default {
       console.log(item.isExpand)
     },
     seeDetail (item, index) {
-      // console.log('see')
-      this.$emit('seeDetail', { index, item })
+      console.log('see')
+      this.$emit('seeDetail', item, index)
     },
     // can be changed to computed
     getPaddingLeft (level) {
@@ -155,6 +158,10 @@ export default {
 .height40 {
   line-height: 40px;
   text-align: center;
+}
+.border {
+  border: 5px solid #999;
+  margin: 5px 0;
 }
 .dark {
   background-color: #2d98e4;

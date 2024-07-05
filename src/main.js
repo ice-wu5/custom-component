@@ -28,8 +28,10 @@ if (process.env.NODE_ENV !== 'prod' && !isPc()) {
   console.log(vConsole)
 }
 
-new Vue({
+const vm = new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+console.log(vm)

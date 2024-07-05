@@ -89,26 +89,38 @@ export default {
       }
     }
   },
-  mounted () {
-    this.$refs.left.addEventListener('scroll', this.leftTouchMove)
-    this.$refs.right.addEventListener('scroll', this.rightTouchMove)
-  },
-  beforeDestroy () {
-    this.$refs.left.removeEventListener('scroll', this.leftTouchMove)
-    this.$refs.right.removeEventListener('scroll', this.rightTouchMove)
-  },
+  // mounted () {
+  //   this.$refs.left.addEventListener('scroll', this.leftTouchMove)
+  //   this.$refs.right.addEventListener('scroll', this.rightTouchMove)
+  // },
+  // beforeDestroy () {
+  //   this.$refs.left.removeEventListener('scroll', this.leftTouchMove)
+  //   this.$refs.right.removeEventListener('scroll', this.rightTouchMove)
+  // },
   methods: {
+    // handleLeftMouseLeave () {
+    //   this.$refs.right.addEventListener('scroll', this.rightTouchMove)
+    // },
+    // handleRightMouseLeave () {
+    //   this.$refs.left.addEventListener('scroll', this.leftTouchMove)
+    // },
     leftTouchStart () {
+      // console.log('leftTouchStart')
       this.$refs.right.removeEventListener('scroll', this.rightTouchMove)
       this.$refs.left.addEventListener('scroll', this.leftTouchMove)
     },
     rightTouchStart () {
+      // console.log('rightTouchStart')
       this.$refs.left.removeEventListener('scroll', this.leftTouchMove)
       this.$refs.right.addEventListener('scroll', this.rightTouchMove)
     },
     leftTouchMove () {
-      console.log('左侧scroll监听的回调')
+      // console.log('左侧scroll监听的回调')
+      // this.$refs.right.removeEventListener('scroll', this.rightTouchMove)
+
       this.$refs.right.scrollTop = this.$refs.left.scrollTop * (20 / 26)
+      // console.log('左侧回调this.$refs.left.scrollTop', this.$refs.left.scrollTop)
+      // console.log('左侧回调this.$refs.right.scrollTop', this.$refs.right.scrollTop)
 
       // requestAnimationFrame(() => {
       //   requestAnimationFrame(() => {
@@ -121,9 +133,11 @@ export default {
     },
     rightTouchMove () {
       console.log('右侧scroll监听的回调')
+      // this.$refs.left.removeEventListener('scroll', this.leftTouchMove)
 
       this.$refs.left.scrollTop = this.$refs.right.scrollTop / (20 / 26)
-
+      console.log('右侧回调this.$refs.left.scrollTop', this.$refs.left.scrollTop)
+      console.log('右侧回调this.$refs.right.scrollTop', this.$refs.right.scrollTop)
       // requestAnimationFrame(() => {
       //   requestAnimationFrame(() => {
       //     this.$refs.left.scrollTop = this.$refs.right.scrollTop / (20 / 26)
@@ -236,14 +250,13 @@ export default {
 }
 .left-list {
   height: 400px;
-  position: absolute;
   overflow-y: auto;
+  position: absolute;
 }
 .right-list {
   height: 400px;
-  position: absolute;
-
   overflow-y: auto;
+  position: absolute;
 }
 .big {
   height: 30px;
