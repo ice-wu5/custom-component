@@ -4,6 +4,9 @@
       <div
         class="label"
         @click="handleClick(item)"
+        :style="{
+          'font-size': 16 - 2 * (item.level - 1) + 'px',
+        }"
         :class="{ isActive: item.isActive }"
       >
         {{ item.label }}

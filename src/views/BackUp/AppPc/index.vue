@@ -3,10 +3,8 @@
     <router-view />
     <div
       class="app-float-button"
-      draggable="true"
       ref="floatButton"
-      @mousedown="onMouseDown"
-      @touchstart="onTouchStart"
+      draggable="true"
       @dragstart="onDragStart"
       :style="{
         top: top + 'px',
@@ -34,6 +32,7 @@ import SideNav from '@/components/SideNav/index.vue'
 import CategoryList from '@/components/CategoryList/index.vue'
 
 export default {
+  name: 'AppPc',
   components: {
     FloatButton,
     SideNav,
@@ -43,7 +42,7 @@ export default {
     return {
       top: 50, // 初始位置
       left: 50, // 初始位置
-      dragging: false,
+      isDragging: false,
       startX: 0,
       startY: 0,
       isShowFlotatButton: false, // control FloatButton to show
@@ -52,28 +51,53 @@ export default {
         {
           label: '手风琴',
           jumpRouterName: 'accordion',
+          level: 1,
           children: [
             {
               label: '会话框',
-              jumpRouterName: 'dialog'
+              jumpRouterName: 'dialog',
+              level: 2
+
             },
             {
               label: '无遮罩对话框',
-              jumpRouterName: 'nomaskdialog'
+              jumpRouterName: 'nomaskdialog',
+              level: 2
+
             }
           ]
         },
         {
           label: '表格',
           jumpRouterName: 'table',
+          level: 1,
+
           children: [
             {
               label: 'popover',
-              jumpRouterName: 'popover'
+              jumpRouterName: 'popover',
+              level: 2
+
             },
             {
               label: '提示框',
-              jumpRouterName: 'tip'
+              jumpRouterName: 'tip',
+              level: 2,
+
+              children: [
+                {
+                  label: '会话框',
+                  jumpRouterName: 'dialog',
+                  level: 3
+
+                },
+                {
+                  label: '无遮罩对话框',
+                  jumpRouterName: 'nomaskdialog',
+                  level: 3
+
+                }
+              ]
             }
           ]
         }
@@ -121,89 +145,93 @@ export default {
     }
   },
   methods: {
-    onMouseDown (event) {
-      this.startDrag(event.clientX, event.clientY)
-      window.addEventListener('mousemove', this.onMouseMove)
-      window.addEventListener('mouseup', this.onMouseUp)
-    },
-    onTouchStart (event) {
-      // event.preventDefault() // 禁用默认的触摸行为
-      const touch = event.touches[0]
-      this.startDrag(touch.clientX, touch.clientY)
-      window.addEventListener('touchmove', this.onTouchMove)
-      window.addEventListener('touchend', this.onTouchEnd)
-    },
-    startDrag (clientX, clientY) {
-      this.dragging = true
-      this.startX = clientX - this.left
-      this.startY = clientY - this.top
-    },
-    onMouseMove (event) {
-      if (this.dragging) {
-        this.updatePosition(event.clientX, event.clientY)
-      }
-    },
-    onTouchMove (event) {
-      const touch = event.touches[0]
-      if (this.dragging) {
-        this.updatePosition(touch.clientX, touch.clientY)
-      }
-    },
-    onMouseUp () {
-      this.endDrag()
-    },
-    onTouchEnd () {
-      this.endDrag()
-    },
-    updatePosition (clientX, clientY) {
-      // 计算新的位置
-      let newLeft = clientX - this.startX
-      let newTop = clientY - this.startY
+    // onMouseDown (event) {
+    //   this.startDrag(event.clientX, event.clientY)
+    //   window.addEventListener('mousemove', this.onMouseMove)
+    //   window.addEventListener('mouseup', this.onMouseUp)
+    // },
+    // onTouchStart (event) {
+    //   // event.preventDefault() // 禁用默认的触摸行为
+    //   const touch = event.touches[0]
+    //   this.startDrag(touch.clientX, touch.clientY)
+    //   window.addEventListener('touchmove', this.onTouchMove)
+    //   window.addEventListener('touchend', this.onTouchEnd)
+    // },
+    // startDrag (clientX, clientY) {
+    //   this.dragging = true
+    //   this.startX = clientX - this.left
+    //   this.startY = clientY - this.top
+    // },
+    // onMouseMove (event) {
+    //   if (this.dragging) {
+    //     this.updatePosition(event.clientX, event.clientY)
+    //   }
+    // },
+    // onTouchMove (event) {
+    //   const touch = event.touches[0]
+    //   if (this.dragging) {
+    //     this.updatePosition(touch.clientX, touch.clientY)
+    //   }
+    // },
+    // onMouseUp () {
+    //   this.endDrag()
+    // },
+    // onTouchEnd () {
+    //   this.endDrag()
+    // },
+    // updatePosition (clientX, clientY) {
+    //   // 计算新的位置
+    //   let newLeft = clientX - this.startX
+    //   let newTop = clientY - this.startY
 
-      // 获取按钮和视口的尺寸
-      const buttonWidth = this.$refs.floatButton.offsetWidth
-      const buttonHeight = this.$refs.floatButton.offsetHeight
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight
+    //   // 获取按钮和视口的尺寸
+    //   const buttonWidth = this.$refs.floatButton.offsetWidth
+    //   const buttonHeight = this.$refs.floatButton.offsetHeight
+    //   const viewportWidth = window.innerWidth
+    //   const viewportHeight = window.innerHeight
 
-      // 限制新位置在视口边界内
-      newLeft = Math.max(0, Math.min(newLeft, viewportWidth - buttonWidth))
-      newTop = Math.max(0, Math.min(newTop, viewportHeight - buttonHeight))
+    //   // 限制新位置在视口边界内
+    //   newLeft = Math.max(0, Math.min(newLeft, viewportWidth - buttonWidth))
+    //   newTop = Math.max(0, Math.min(newTop, viewportHeight - buttonHeight))
 
-      // 更新位置
-      this.left = newLeft
-      this.top = newTop
-    },
-    endDrag () {
-      this.dragging = false
-      window.removeEventListener('mousemove', this.onMouseMove)
-      window.removeEventListener('mouseup', this.onMouseUp)
-      window.removeEventListener('touchmove', this.onTouchMove)
-      window.removeEventListener('touchend', this.onTouchEnd)
-    },
+    //   // 更新位置
+    //   this.left = newLeft
+    //   this.top = newTop
+    // },
+    // endDrag () {
+    //   this.dragging = false
+    //   window.removeEventListener('mousemove', this.onMouseMove)
+    //   window.removeEventListener('mouseup', this.onMouseUp)
+    //   window.removeEventListener('touchmove', this.onTouchMove)
+    //   window.removeEventListener('touchend', this.onTouchEnd)
+    // },
 
-    onDragEnter (e) {
-      // console.log('onDragEnter', e)
-    },
+    // onDragEnter (e) {
+    //   // console.log('onDragEnter', e)
+    // },
     onDrop (e) {
-      let newLeft = e.clientX - this.startX
-      let newTop = e.clientY - this.startY
+      e.preventDefault()
       // 获取按钮和视口的尺寸
       const buttonWidth = this.$refs.floatButton.offsetWidth
       const buttonHeight = this.$refs.floatButton.offsetHeight
       const viewportWidth = window.innerWidth
       const viewportHeight = window.innerHeight
+      let newLeft = e.clientX - buttonWidth / 2
+      let newTop = e.clientY - buttonHeight / 2
 
       // 限制新位置在视口边界内
       newLeft = Math.max(0, Math.min(newLeft, viewportWidth - buttonWidth))
       newTop = Math.max(0, Math.min(newTop, viewportHeight - buttonHeight))
 
+      console.log('newLeft', newLeft)
+      console.log('newTop', newTop)
       // 更新位置
       this.left = newLeft
       this.top = newTop
     },
     onDragOver (e) {
       e.preventDefault()
+      // e.target.style.outline = 'none'
       e.dataTransfer.dropEffect = 'move'
       console.log('app-onDragOver', e)
     },
@@ -215,14 +243,60 @@ export default {
       e.dataTransfer.setData('text/plain', '')
       // e.dataTransfer.dropEffect = 'move'
       e.dataTransfer.effectAllowed = 'move'
+      // 添加透明图像
+      // const img = new Image()
+      // img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='
+      // e.dataTransfer.setDragImage(img, 0, 0)
     },
+    onMouseDown (event) {
+      this.isDragging = true
+      this.startX = event.clientX - this.left
+      this.startY = event.clientY - this.top
+      document.addEventListener('mousemove', this.onMouseMove)
+      document.addEventListener('mouseup', this.onMouseUp)
+    },
+    onMouseMove (event) {
+      if (this.isDragging) {
+        this.left = event.clientX - this.startX
+        this.top = event.clientY - this.startY
+      }
+    },
+    onMouseUp () {
+      this.isDragging = false
+      document.removeEventListener('mousemove', this.onMouseMove)
+      document.removeEventListener('mouseup', this.onMouseUp)
+    },
+    // onDrop (e) {
+    //   e.preventDefault()
+    //   this.isDragging = false
+    // },
+    // onDragOver (e) {
+    //   e.preventDefault()
+    // },
     onDrag (event) {
       // if (this.dragging) {
       //   this.left = event.clientX - this.startX
       //   this.top = event.clientY - this.startY
       // }
     },
-    onDragEnd (event) {
+    onDragEnd (e) {
+      // 计算新的位置
+      let newLeft = e.clientX - this.startX
+      let newTop = e.clientY - this.startY
+
+      // 获取按钮和视口的尺寸
+      const buttonWidth = this.$refs.floatButton.offsetWidth
+      const buttonHeight = this.$refs.floatButton.offsetHeight
+      const viewportWidth = window.innerWidth
+      const viewportHeight = window.innerHeight
+
+      // 限制新位置在视口边界内
+      newLeft = Math.max(0, Math.min(newLeft, viewportWidth - buttonWidth))
+      newTop = Math.max(0, Math.min(newTop, viewportHeight - buttonHeight))
+
+      // 更新位置
+      this.left = newLeft
+      this.top = newTop
       // this.dragging = false
       // // 确保在拖拽结束时更新位置
       // if (event.clientX !== 0 && event.clientY !== 0) { // 检查事件坐标，以避免某些情况下的意外行为
@@ -254,16 +328,10 @@ export default {
   position: fixed;
   cursor: pointer;
   border-radius: 50%;
-  box-shadow: 0px -5px 20px 0px rgba(0, 0, 0, 0.13),
-    1px 1px 20px 2px rgba(0, 0, 0, 0.13), 2px 5px 18px 0px rgba(0, 0, 0, 0.14),
-    -1px 0px 20px 0px rgba(0, 0, 0, 0.13);
-  color: #fff;
-  touch-action: none; /* 禁用默认的触摸行为 */
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 禁用点击时的高亮 */
-  &:active {
-    outline: none;
-  }
+  filter: drop-shadow(0px 2px 15px rgba(0, 0, 0, 0.5));
+  overflow: hidden;
 }
+
 .app-side-nav {
   position: fixed;
   left: 10%;

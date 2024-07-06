@@ -30,11 +30,14 @@ export default {
 
   },
   watch: {
-    isShow (res) {
-      console.log('子组件接受的isShow', res)
-    }
+    // isShow (res) {
+    //   console.log('子组件接受的isShow', res)
+    // }
   },
   methods: {
+    // onDragOver (e) {
+    //   console.log('float-onDragOver', e.target)
+    // },
     handleClick () {
       this.$emit('floatClick')
     }

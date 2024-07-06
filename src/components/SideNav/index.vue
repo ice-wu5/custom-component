@@ -67,16 +67,18 @@ export default {
   align-items: center;
   overflow: hidden;
   padding: 20px;
-  background: #535c8e;
+  background: rgba(58, 97, 178, 0.65);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 5%;
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.2);
 }
 .right {
   color: #fff;
   margin-left: 40px;
   cursor: pointer;
   &:hover {
-    color: rgb(109, 109, 222);
+    color: rgb(74, 74, 79);
   }
 }
 </style>>
