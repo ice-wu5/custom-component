@@ -46,6 +46,7 @@ import SideNav from '@/components/SideNav/index.vue'
 import CategoryList from '@/components/CategoryList/index.vue'
 
 export default {
+  name: 'ScrollApp',
   components: {
     FloatButton,
     SideNav,

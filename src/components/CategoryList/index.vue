@@ -121,14 +121,19 @@ export default {
     // console.log('list', this.list)
     // console.log('label', this.getAllLabels())
     // console.log('activeLabel', this.activeLabel)
-    this.allLabels = this.getAllLabels()
-    console.log('activeLabel', this.activeLabel)
+    // console.log('activeLabel', this.activeLabel)
 
-    const activeLabelRect = this.getActiveLabelRect()
+    // const activeLabelRect = this.getActiveLabelRect()
     this.$nextTick(() => {
-      if (activeLabelRect) {
-        this.$emit('scrollToActive', activeLabelRect)
-      }
+      this.allLabels = this.getAllLabels()
+
+      const activeLabelRect = this.getActiveLabelRect()
+
+      this.$emit('scrollToActive', activeLabelRect)
+
+      // if (activeLabelRect) {
+      //   this.$emit('scrollToActive', activeLabelRect)
+      // }
     })
   }
 }

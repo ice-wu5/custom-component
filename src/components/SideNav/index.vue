@@ -1,5 +1,5 @@
 <template>
-  <div class="side-nav" ref="sideNav">
+  <div class="side-nav" v-show="isShow" ref="sideNav">
     <Transition
       @before-enter="beforeEnter"
       @enter="enter"
@@ -40,7 +40,19 @@ export default {
 
   watch: {
     labelRect: {
-      handler (res) {
+      handler () {
+        if (this.$refs.content) {
+          this.scrollHeight = this.$refs.content.scrollHeight
+          this.contentRectTop = this.$refs.content.getBoundingClientRect().top
+          this.contentRectHeight = this.$refs.content.getBoundingClientRect().height
+          this.scrollToActive()
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    scrollHeight: {
+      handler () {
         this.scrollToActive()
       },
       immediate: true,
@@ -48,14 +60,13 @@ export default {
     }
 
   },
-  mounted () {
-    // 获取元素属性
-    if (this.$refs.content) {
-      this.contentRectTop = this.$refs.content.getBoundingClientRect().top
-      this.contentRectHeight = this.$refs.content.getBoundingClientRect().height
-      this.scrollHeight = this.$refs.content.scrollHeight
-    }
-  },
+  // mounted () {
+  //   // 获取元素属性
+  //   if (this.$refs.content) {
+
+  //     console.log('this.$refs.content.scrollHeight', this.$refs.content.scrollHeight)
+  //   }
+  // },
   computed: {
     // 是否存在滚动，滚动高度与容器可见高度的差值
     scrollDes () {
@@ -65,9 +76,13 @@ export default {
   methods: {
     // 滚动到activeLabel
     scrollToActive () {
-      if (this.$refs.content && this.scrollDes) {
+      console.log('this.scrollHeight', this.scrollHeight)
+      if (this.scrollHeight > 0) {
         const scrollTop = this.getScrollTop()
-        this.$refs.content.scrollTop = scrollTop
+        console.log('setScrollTop', scrollTop)
+        this.$nextTick(() => {
+          this.$refs.content.scrollTop = scrollTop
+        })
       }
     },
     // 获取需要滚动的距离
@@ -75,7 +90,7 @@ export default {
       if (this.labelRect) {
         const des = this.contentRectTop + this.contentRectHeight / 2 - this.labelRect.rectHeight / 2
         const scrollTop = this.labelRect.rectTop - des
-        const limit = this.scrollDes
+        const limit = this.scrollHeight - this.contentRectHeight
         if (scrollTop >= limit) {
           return limit
         } else {
@@ -124,6 +139,7 @@ export default {
       // el.style.width = 0
       el.style.transition = 'none'
       done()
+
       // console.log('transitionEnd')
       // this.$emit('transitionEnd')
       // console.log('transitionEnd')
