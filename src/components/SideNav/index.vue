@@ -1,15 +1,15 @@
 <template>
-  <div class="side-nav" v-show="isShow">
+  <div class="side-nav" ref="sideNav">
     <Transition
       @before-enter="beforeEnter"
       @enter="enter"
       @leave="handleAfterEnter"
     >
       <div class="side-nav-content" v-if="isShow">
-        <div class="left">
+        <div class="left" ref="content">
           <slot></slot>
         </div>
-        <div class="right" @click="handleClick">&gt;</div>
+        <div class="right" @click="handleClick">&lt;</div>
       </div>
     </Transition>
   </div>
@@ -19,40 +19,120 @@
 // import CategoryList from '@/components/CategoryList/index.vue'
 export default {
   name: 'SideNav',
+  data () {
+    return {
+      contentRectTop: 0,
+      contentRectHeight: 0,
+      scrollHeight: 0// 滚动内容区的总高度
+    }
+  },
   props: {
+    labelRect: {
+      type: Object,
+      required: false
+    },
     isShow: {
       type: Boolean,
       required: true,
       default: false
     }
   },
+
+  watch: {
+    labelRect: {
+      handler (res) {
+        this.scrollToActive()
+      },
+      immediate: true,
+      deep: true
+    }
+
+  },
+  mounted () {
+    // 获取元素属性
+    if (this.$refs.content) {
+      this.contentRectTop = this.$refs.content.getBoundingClientRect().top
+      this.contentRectHeight = this.$refs.content.getBoundingClientRect().height
+      this.scrollHeight = this.$refs.content.scrollHeight
+    }
+  },
+  computed: {
+    // 是否存在滚动，滚动高度与容器可见高度的差值
+    scrollDes () {
+      return this.scrollHeight - this.contentRectHeight
+    }
+  },
   methods: {
+    // 滚动到activeLabel
+    scrollToActive () {
+      if (this.$refs.content && this.scrollDes) {
+        const scrollTop = this.getScrollTop()
+        this.$refs.content.scrollTop = scrollTop
+      }
+    },
+    // 获取需要滚动的距离
+    getScrollTop () {
+      if (this.labelRect) {
+        const des = this.contentRectTop + this.contentRectHeight / 2 - this.labelRect.rectHeight / 2
+        const scrollTop = this.labelRect.rectTop - des
+        const limit = this.scrollDes
+        if (scrollTop >= limit) {
+          return limit
+        } else {
+          return scrollTop
+        }
+      } else {
+        return 0
+      }
+    },
+    // 点击右侧箭头的回调
     handleClick () {
       this.$emit('collapse')
     },
+    // 过渡开始前
     beforeEnter (el) {
       el.style.width = 0
+      // el.style.transform = 'translateX(-30px)'
     },
+    // 过渡开始
     enter (el, done) {
       console.log('enter执行了')
-      // 强制重绘
+
       el.style.width = 'auto'
-      const w = el.clientWidth
-      el.style.width = 0
+      // 获取元素宽度
+      const w = el.offsetWidth
       console.log('w', w)
+      // 传递元素宽度给父组件
+      this.$emit('getWidth', w)
+      el.style.width = 0
       // 使用 requestAnimationFrame 确保过渡效果生效
       requestAnimationFrame(() => {
         el.style.width = w + 'px'
+        // 偏移量
+        const offsetWidth = 30
+        el.style.transform = `translateX(-${offsetWidth}px)`
+
         el.style.transition = '0.2s'
         done()
+        console.log('transitionEnd')
+        this.$emit('transitionEnd')
         // el.addEventListener('transitionend', done)
       })
     },
+    // 过渡开始后
     handleAfterEnter (el, done) {
       // el.style.width = 0
       el.style.transition = 'none'
       done()
+      // console.log('transitionEnd')
+      // this.$emit('transitionEnd')
+      // console.log('transitionEnd')
+      // this.$emit('transitionEnd')
       // el.addEventListener('transitionend', done)
+    },
+    handleAfterLeave () {
+      // console.log('transitionEnd')
+      // this.$emit('transitionEnd')
     }
   }
   // components: { CategoryList },
@@ -73,10 +153,14 @@ export default {
   border-radius: 5%;
   box-shadow: 0 0 80px rgba(0, 0, 0, 0.2);
 }
+.left {
+  max-height: 200px;
+  overflow-y: auto;
+}
 .right {
   color: #fff;
-  margin-left: 40px;
   cursor: pointer;
+  padding-left: 7px;
   &:hover {
     color: rgb(74, 74, 79);
   }

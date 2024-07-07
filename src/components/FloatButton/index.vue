@@ -9,7 +9,7 @@
         lineHeight: size + 'px',
       }"
     >
-      &gt;
+      &Congruent;
     </div>
   </div>
 </template>
@@ -50,10 +50,10 @@ export default {
   border-radius: 50%;
   cursor: pointer;
   text-align: center;
-  background: rgb(98, 104, 212);
+  background: radial-gradient(circle, rgb(18, 28, 216), rgb(154, 157, 221));
   font-size: 20px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.13),
-    0 6px 16px 0 rgba(0, 0, 0, 0.13), 0 12px 24px 16px rgba(0, 0, 0, 0.14);
+    0 6px 10px 0 rgba(0, 0, 0, 0.13), 0 12px 24px 10px rgba(0, 0, 0, 0.14);
   color: #fff;
   filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
   transition: 0.5s;

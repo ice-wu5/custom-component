@@ -18,7 +18,11 @@
         @floatClick="handleFloatClick"
       ></FloatButton>
     </div>
-    <div class="app-side-nav">
+    <div
+      class="app-side-nav"
+      ref="sideNav"
+      :style="{ left: sideNavLeft + 'px', top: sideNavTop + 'px' }"
+    >
       <SideNav :isShow="isShowCategoryNav" @collapse="handleCollapse">
         <CategoryList
           :list="categoryListWithActive"
@@ -32,9 +36,9 @@
 import FloatButton from '@/components/FloatButton/index.vue'
 import SideNav from '@/components/SideNav/index.vue'
 import CategoryList from '@/components/CategoryList/index.vue'
-
+// category 位置跟随FloatButton
 export default {
-  name: 'AppMobile',
+  name: 'LiveCategory',
   components: {
     FloatButton,
     SideNav,
@@ -42,8 +46,14 @@ export default {
   },
   data () {
     return {
-      top: 50, // 初始位置
-      left: 50, // 初始位置
+      top: 50, // 悬浮按钮的初始位置
+      left: 50, // 悬浮按钮的初始位置
+      sideNavTop: 50, // init category position top
+      sideNavLeft: 50, // init category position left
+      sideNavWidth: 0, // init SideNav width
+      sideNavHeight: 0, // init SideNav height
+      viewportWidth: 0, // 视口宽
+      viewportHeight: 0, // 视口高
       dragging: false,
       startX: 0,
       startY: 0,
@@ -53,28 +63,53 @@ export default {
         {
           label: '手风琴',
           jumpRouterName: 'accordion',
+          level: 1,
           children: [
             {
               label: '会话框',
-              jumpRouterName: 'dialog'
+              jumpRouterName: 'dialog',
+              level: 2
+
             },
             {
               label: '无遮罩对话框',
-              jumpRouterName: 'nomaskdialog'
+              jumpRouterName: 'nomaskdialog',
+              level: 2
+
             }
           ]
         },
         {
           label: '表格',
           jumpRouterName: 'table',
+          level: 1,
+
           children: [
             {
               label: 'popover',
-              jumpRouterName: 'popover'
+              jumpRouterName: 'popover',
+              level: 2
+
             },
             {
               label: '提示框',
-              jumpRouterName: 'tip'
+              jumpRouterName: 'tip',
+              level: 2,
+
+              children: [
+                {
+                  label: '会话框',
+                  jumpRouterName: 'dialog',
+                  level: 3
+
+                },
+                {
+                  label: '无遮罩对话框',
+                  jumpRouterName: 'nomaskdialog',
+                  level: 3
+
+                }
+              ]
             }
           ]
         }
@@ -82,6 +117,8 @@ export default {
     }
   },
   mounted () {
+    console.log('getExpandObject', this.getExpandObject())
+
     console.log('this.categoryListWithActive', this.categoryListWithActive)
   },
   computed: {
@@ -122,6 +159,15 @@ export default {
     }
   },
   methods: {
+    getExpandObject () {
+      return {
+        isActive: true,
+        ...{
+          item: false
+        },
+        item: true
+      }
+    },
     onMouseDown (event) {
       this.startDrag(event.clientX, event.clientY)
       window.addEventListener('mousemove', this.onMouseMove)
@@ -186,22 +232,27 @@ export default {
     onDragEnter (e) {
       // console.log('onDragEnter', e)
     },
+
+    setViewportSize () {
+      this.viewportWidth = window.innerWidth
+      this.viewportHeight = window.innerHeight
+    },
     onDrop (e) {
       let newLeft = e.clientX - this.startX
       let newTop = e.clientY - this.startY
       // 获取按钮和视口的尺寸
       const buttonWidth = this.$refs.floatButton.offsetWidth
       const buttonHeight = this.$refs.floatButton.offsetHeight
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight
+      this.setViewportSize()
 
       // 限制新位置在视口边界内
-      newLeft = Math.max(0, Math.min(newLeft, viewportWidth - buttonWidth))
-      newTop = Math.max(0, Math.min(newTop, viewportHeight - buttonHeight))
+      newLeft = Math.max(0, Math.min(newLeft, this.viewportWidth - buttonWidth))
+      newTop = Math.max(0, Math.min(newTop, this.viewportHeight - buttonHeight))
 
       // 更新位置
       this.left = newLeft
       this.top = newTop
+      // 更新SideNav的位置
     },
     onDragOver (e) {
       e.preventDefault()
@@ -240,11 +291,27 @@ export default {
       console.log('app收到子组件handleChangeCategory', item)
       this.$router.push({ name: item.jumpRouterName })
     },
+    // 获取SideNav的宽高
+    setSideNavSize () {
+      this.sideNavWidth = this.$refs.sideNav.offsetWidth
+      this.sideNavHeight = this.$refs.sideNav.offsetHeight
+    },
     handleFloatClick () {
       console.log('弹出目录')
       // 隐藏FloatButton
       this.isShowFlotatButton = false
       this.isShowCategoryNav = true
+      // 设置sideNav的left,top
+      if (this.left >= this.viewportWidth - this.sideNavWidth) {
+        this.sideNavLeft = this.viewportWidth - this.sideNavWidth
+      } else {
+        this.sideNavLeft = this.left
+      }
+      if (this.top >= this.viewportHeight - this.sideNavHeight) {
+        this.sideNavTop = this.viewportWidth - this.sideNavHeight
+      } else {
+        this.sideNavTop = this.top
+      }
     }
   }
 }
@@ -267,8 +334,7 @@ export default {
 }
 .app-side-nav {
   position: fixed;
-  left: 10%;
-  top: 20%;
+  opacity: 0;
   z-index: 99;
 }
 </style>
